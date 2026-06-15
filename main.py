@@ -63,3 +63,10 @@ def callback_query(call):
 
 print("ቦቱ እየሰራ ነው...")
 bot.polling(none_stop=True)
+
+import os
+import telebot
+
+# ቶከኑን ከስርዓቱ እንዲያነብ እናደርገዋለን
+TOKEN = os.environ.get('BOT_TOKEN') 
+bot = telebot.TeleBot(TOKEN)
