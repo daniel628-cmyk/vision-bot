@@ -18,7 +18,7 @@ all_users = set()
 
 lang_info = {
     "am": "🇪🇹", "en": "🇺🇸", 
-    "om": "🇪🇹", "es": "🇪🇸", "fr": "🇫🇷"
+    "om": "Ⓞ", "es": "🇪🇸", "fr": "🇫🇷"
 }
 
 @bot.message_handler(commands=['start'])
