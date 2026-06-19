@@ -1,13 +1,20 @@
+import os
 import telebot
 from deep_translator import GoogleTranslator
 from telebot import types
 
-TOKEN = "8665976705:AAEkSumfgoiDkI01utc1QGEkrS2S50y59QQ"
+# ቶከኑን በኮዱ ውስጥ አይፃፉ! 
+# ይልቁንም Railway ላይ ባዘጋጀነው Environment Variable ውስጥ እንዲቀመጥ እናደርገዋለን።
+TOKEN = os.environ.get('BOT_TOKEN')
+
+if not TOKEN:
+    print("ስህተት: BOT_TOKEN አልተገኘም! እባክዎ Railway Variables ውስጥ ያስገቡት።")
+    exit()
+
 bot = telebot.TeleBot(TOKEN)
 
-# ለተጠቃሚዎች እና ለስታቲስቲክስ
 user_data = {}
-all_users = set() # ልዩ ተጠቃሚዎችን ለመቁጠር
+all_users = set()
 
 lang_info = {
     "am": "🇪🇹", "en": "🇺🇸", 
@@ -16,21 +23,20 @@ lang_info = {
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
-    user_name = message.from_user.first_name # የተጠቃሚው ስም
-    all_users.add(message.chat.id) # ተጠቃሚውን መዝግብ
+    user_name = message.from_user.first_name
+    all_users.add(message.chat.id)
     
     welcome_text = (
         f"👋 **ሰላም፣ {user_name}!** ወደ **Vision ትርጉም ቦት** እንኳን በደህና መጡ!\n\n"
-        f"👥 አሁን ቦቱን እየተጠቀሙ ያሉ ጠቅላላ ተጠቃሚዎች: {len(all_users)}\n\n"
+        f"👥 ጠቅላላ ተጠቃሚዎች: {len(all_users)}\n\n"
         "ጽሑፎችን ወደ ፈለጉት ቋንቋ 🌍 በቀላሉ ለመተርጎም እረዳዎታለሁ።\n\n"
-        "ለመጀመር፣ እባክዎ መተርጎም የሚፈልጉትን **ጽሑፍ ይላኩልኝ።**"
+        "ለመጀመር፣ መተርጎም የሚፈልጉትን ጽሑፍ ይላኩልኝ።"
     )
     bot.reply_to(message, welcome_text, parse_mode='Markdown')
 
 @bot.message_handler(func=lambda message: True)
 def handle_text(message):
     if message.text.startswith('/'): return
-    
     user_data[message.chat.id] = message.text
     
     markup = types.InlineKeyboardMarkup(row_width=2)
@@ -48,25 +54,15 @@ def callback_query(call):
     
     try:
         translated = GoogleTranslator(source='auto', target=target_lang).translate(original_text)
-        
         result_text = (
             f"{lang_info[target_lang]} {translated}\n\n"
             f"━━━━━━━━━━━━━━━━━━\n"
             f"🤖 @vision_translator_bot"
         )
-        
         bot.reply_to(call.message, result_text, parse_mode='Markdown')
         bot.delete_message(chat_id, call.message.message_id)
-        
-    except Exception:
+    except Exception as e:
         bot.send_message(chat_id, "⚠️ ይቅርታ፣ መተርጎም አልቻልኩም።")
 
 print("ቦቱ እየሰራ ነው...")
-bot.polling(none_stop=True)
-
-import os
-import telebot
-
-# ቶከኑን ከስርዓቱ እንዲያነብ እናደርገዋለን
-TOKEN = os.environ.get('BOT_TOKEN') 
-bot = telebot.TeleBot(TOKEN)
+bot.infinity_polling()
