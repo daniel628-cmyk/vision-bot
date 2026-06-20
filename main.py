@@ -3,7 +3,7 @@ import telebot
 from deep_translator import GoogleTranslator
 from telebot import types
 
-# ቶከን ከ Railway Variables ይወስዳል
+# ቶከን ከ Railway Environment Variables ይወሰዳል
 TOKEN = os.environ.get('BOT_TOKEN')
 if not TOKEN:
     exit("ስህተት: BOT_TOKEN በ Railway Variables ውስጥ አልተገኘም!")
@@ -29,10 +29,10 @@ def send_welcome(message):
     welcome_text = (
         f"✨ **እንኳን ወደ Vision Translator Bot በደህና መጡ!** ✨\n\n"
         f"ሰላም {user_name}! 👋\n"
-        "ከአንድ ቋንቋ ወደ ሌላ ቋንቋ ትክክለኛ እና ፈጣን ትርጉም ለማግኘት እዚህ ነኝ። 🌍\n\n"
-        "🚀 **እንዴት መጠቀም ይቻላል?**\n"
-        "መተርጎም የሚፈልጉትን ጽሑፍ ብቻ ይላኩልኝ፤ ከዚያ የሚፈልጉትን ቋንቋ ይምረጡ።\n\n"
-        "በጉጉት እየጠበቅኩዎት ነው! 👇"
+        "እኔ የእርስዎ ብልህ የቋንቋ ተርጓሚ ነኝ። 🌍 ጽሑፎችን በቀላሉ፣ በፍጥነት እና በትክክለኛነት ወደ ተለያዩ የዓለም ቋንቋዎች እንዲቀይሩ እረዳዎታለሁ። 📚\n\n"
+        "የምንደግፋቸው ቋንቋዎች፦\n"
+        "አማርኛ፣ እንግሊዝኛ፣ አፋን ኦሮሞ፣ ፈረንሳይኛ፣ አረብኛ እና ሌሎችም።\n\n"
+        "🚀 **ለመጀመር:** መተርጎም የሚፈልጉትን ጽሑፍ ብቻ ይላኩልኝ፤ በደስታ እተረጉምልዎታለሁ!"
     )
     bot.reply_to(message, welcome_text, parse_mode='Markdown')
 
@@ -58,9 +58,12 @@ def callback_query(call):
         bot.send_message(chat_id, "⚠️ እባክዎ መጀመሪያ መተርጎም የሚፈልጉትን ጽሑፍ ይላኩልኝ።")
         return
 
+    # ቋንቋው ከተመረጠ በኋላ የቋንቋ ምርጫ ቁልፎቹን ማጥፋት
+    bot.edit_message_reply_markup(chat_id=chat_id, message_id=call.message.message_id, reply_markup=None)
+
     try:
         translator = GoogleTranslator(source='auto', target=target_lang)
-        # ጽሁፍ ረጅም ከሆነ መከፋፈል
+        # ረጅም ጽሁፍ መከፋፈል
         if len(original_text) > 2000:
             part1 = original_text[:2000]
             part2 = original_text[2000:]
