@@ -22,6 +22,7 @@ init_db()
 
 user_data = {}
 
+# ተጨማሪ ቋንቋዎች ተካተዋል
 lang_info = {
     "am": {"name": "አማርኛ", "flag": "🇪🇹"},
     "en": {"name": "English", "flag": "🇺🇸"},
@@ -29,7 +30,12 @@ lang_info = {
     "es": {"name": "Español", "flag": "🇪🇸"},
     "fr": {"name": "Français", "flag": "🇫🇷"},
     "ar": {"name": "العربية", "flag": "🇸🇦"},
-    "de": {"name": "Deutsch", "flag": "🇩🇪"}
+    "de": {"name": "Deutsch", "flag": "🇩🇪"},
+    "it": {"name": "Italiano", "flag": "🇮🇹"},
+    "pt": {"name": "Português", "flag": "🇵🇹"},
+    "ru": {"name": "Русский", "flag": "🇷🇺"},
+    "zh-cn": {"name": "中文", "flag": "🇨🇳"},
+    "ja": {"name": "日本語", "flag": "🇯🇵"}
 }
 
 # --- COMMAND HANDLERS ---
@@ -45,7 +51,7 @@ def send_welcome(message):
     user_name = message.from_user.first_name
     welcome_text = (
         f"✨ **ሰላም {user_name}! ወደ Vision Translator እንኳን በደህና መጡ!** ✨\n\n"
-        "ጽሑፎችን በቀላሉ ወደፈለጉት ቋንቋ ለመተርጎም እዚህ ነኝ። 🌍\n\n"
+        "ጽሑፎችን በቀላሉ ወደፈለጉት ዓለም አቀፍ ቋንቋዎች ለመተርጎም እዚህ ነኝ። 🌍\n\n"
         "🚀 **ለመጀመር:** መተርጎም የሚፈልጉትን ጽሑፍ ይላኩልኝ።"
     )
     bot.reply_to(message, welcome_text, parse_mode='Markdown')
@@ -54,8 +60,10 @@ def send_welcome(message):
 def send_about(message):
     about_text = (
         "🤖 **ስለ Vision Translator Bot**\n\n"
-        "ይህ ቦት ጽሁፎችን በቀላሉ ወደተለያዩ ቋንቋዎች እንዲቀይሩ ይረዳዎታል።\n"
-        "ስሪት: 1.0.0"
+        "ይህ ቦት የላቀ የትርጉም ቴክኖሎጂን በመጠቀም ማንኛውንም ጽሑፍ በሰከንዶች ውስጥ ወደሚፈልጉት ቋንቋ ይተረጉማል።\n"
+        "• **ዋና ግብ:** የቋንቋ እንቅፋቶችን ማስወገድ።\n"
+        "• **የሚደግፋቸው ቋንቋዎች:** አማርኛ፣ ኦሮምኛ፣ እንግሊዝኛ፣ ፈረንሳይኛ፣ ስፓኒሽ፣ አረብኛ፣ ጀርመንኛ፣ ጣልያንኛ፣ ፖርቱጋልኛ፣ ሩሲያኛ፣ ቻይንኛ እና ጃፓንኛ።\n"
+        "ስሪት: 1.1.0"
     )
     bot.reply_to(message, about_text, parse_mode='Markdown')
 
@@ -63,11 +71,15 @@ def send_about(message):
 def send_help(message):
     help_text = (
         "💡 **የእገዛ ማዕከል**\n\n"
-        "መተርጎም የሚፈልጉትን ጽሁፍ ይላኩልኝ፤ ከዚያ ቋንቋውን ይምረጡ።\n\n"
+        "ቦቱን ለመጠቀም እነዚህን ደረጃዎች ይከተሉ፡\n"
+        "1. መተርጎም የሚፈልጉትን ጽሑፍ ይጻፉልኝ።\n"
+        "2. ከሚመጡት አማራጮች ውስጥ የሚፈልጉትን ቋንቋ ይምረጡ።\n"
+        "3. ውጤቱን ይጠብቁ።\n\n"
         "ትዕዛዞች:\n"
-        "/start - ቦቱን ለመጀመር\n"
-        "/about - ስለ ቦቱ መረጃ\n"
-        "/help - ይህንን መልእክት ለማየት"
+        "/start - ቦቱን እንደገና ለመጀመር\n"
+        "/about - ስለ ቦቱ ዝርዝር መረጃ\n"
+        "/help - ይህንን የእገዛ መልእክት ለማየት\n\n"
+        "📌 **ማሳሰቢያ:** ማንኛውም የቴክኒክ ችግር ካጋጠመዎት ወይም ተጨማሪ አስተያየት ካለዎት @th_ug_life ላይ ያግኙን።"
     )
     bot.reply_to(message, help_text, parse_mode='Markdown')
 
