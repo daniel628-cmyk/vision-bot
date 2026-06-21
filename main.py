@@ -7,10 +7,8 @@ from telebot import types
 TOKEN = os.environ.get('BOT_TOKEN')
 bot = telebot.TeleBot(TOKEN)
 
-# የአስተዳዳሪ መታወቂያ
 ADMIN_ID = 5544893200
 
-# ዳታቤዝ ማዘጋጃ
 def init_db():
     conn = sqlite3.connect('bot_data.db')
     cursor = conn.cursor()
@@ -22,7 +20,6 @@ init_db()
 
 user_data = {}
 
-# ተጨማሪ ቋንቋዎች ተካተዋል
 lang_info = {
     "am": {"name": "አማርኛ", "flag": "🇪🇹"},
     "en": {"name": "English", "flag": "🇺🇸"},
@@ -50,9 +47,10 @@ def send_welcome(message):
 
     user_name = message.from_user.first_name
     welcome_text = (
-        f"✨ **ሰላም {user_name}! ወደ Vision Translator እንኳን በደህና መጡ!** ✨\n\n"
-        "ጽሑፎችን በቀላሉ ወደፈለጉት ዓለም አቀፍ ቋንቋዎች ለመተርጎም እዚህ ነኝ። 🌍\n\n"
-        "🚀 **ለመጀመር:** መተርጎም የሚፈልጉትን ጽሑፍ ይላኩልኝ።"
+        f"✨ **እንኳን ወደ Vision Translator በደህና መጡ!** ✨\n\n"
+        f"ሰላም **{user_name}**! 👋\n"
+        "ይህ ቦት ጽሑፎችን በቀላሉ ወደፈለጉት ዓለም አቀፍ ቋንቋዎች እንዲቀይሩ ይረዳዎታል። 🌍\n\n"
+        "🚀 **ለመጀመር:** መተርጎም የሚፈልጉትን ጽሑፍ ይላኩልኝ!"
     )
     bot.reply_to(message, welcome_text, parse_mode='Markdown')
 
@@ -60,26 +58,28 @@ def send_welcome(message):
 def send_about(message):
     about_text = (
         "🤖 **ስለ Vision Translator Bot**\n\n"
-        "ይህ ቦት የላቀ የትርጉም ቴክኖሎጂን በመጠቀም ማንኛውንም ጽሑፍ በሰከንዶች ውስጥ ወደሚፈልጉት ቋንቋ ይተረጉማል።\n"
-        "• **ዋና ግብ:** የቋንቋ እንቅፋቶችን ማስወገድ።\n"
-        "• **የሚደግፋቸው ቋንቋዎች:** አማርኛ፣ ኦሮምኛ፣ እንግሊዝኛ፣ ፈረንሳይኛ፣ ስፓኒሽ፣ አረብኛ፣ ጀርመንኛ፣ ጣልያንኛ፣ ፖርቱጋልኛ፣ ሩሲያኛ፣ ቻይንኛ እና ጃፓንኛ።\n"
-        "ስሪት: 1.1.0"
+        "🌐 የላቀ የትርጉም ቴክኖሎጂን በመጠቀም ጽሑፍን በሰከንዶች ውስጥ ይተርጉሙ።\n\n"
+        "💎 **ቁልፍ ባህሪያት:**\n"
+        "• ፈጣን እና ትክክለኛ ትርጉም\n"
+        "• በርካታ የዓለም ቋንቋዎች ድጋፍ\n"
+        "• ቀላል እና ምቹ አጠቃቀም\n\n"
+        "📍 ስሪት: **1.1.0**"
     )
     bot.reply_to(message, about_text, parse_mode='Markdown')
 
 @bot.message_handler(commands=['help'])
 def send_help(message):
     help_text = (
-        "💡 **የእገዛ ማዕከል**\n\n"
+        "💡 **የእገዛ ማዕከል** 🆘\n\n"
         "ቦቱን ለመጠቀም እነዚህን ደረጃዎች ይከተሉ፡\n"
-        "1. መተርጎም የሚፈልጉትን ጽሑፍ ይጻፉልኝ።\n"
-        "2. ከሚመጡት አማራጮች ውስጥ የሚፈልጉትን ቋንቋ ይምረጡ።\n"
-        "3. ውጤቱን ይጠብቁ።\n\n"
-        "ትዕዛዞች:\n"
-        "/start - ቦቱን እንደገና ለመጀመር\n"
-        "/about - ስለ ቦቱ ዝርዝር መረጃ\n"
-        "/help - ይህንን የእገዛ መልእክት ለማየት\n\n"
-        "📌 **ማሳሰቢያ:** ማንኛውም የቴክኒክ ችግር ካጋጠመዎት ወይም ተጨማሪ አስተያየት ካለዎት @th_ug_life ላይ ያግኙን።"
+        "1️⃣ መተርጎም የሚፈልጉትን ጽሑፍ ይጻፉልኝ።\n"
+        "2️⃣ ከሚመጡት አማራጮች ውስጥ ቋንቋውን ይምረጡ።\n"
+        "3️⃣ ትርጉሙን በአፋጣኝ ይጠብቁ! ⚡\n\n"
+        "📜 **የትዕዛዝ ዝርዝር:**\n"
+        "/start - 🔄 ቦቱን ዳግም ያስጀምሩ\n"
+        "/about - ℹ️ ስለ ቦቱ ዝርዝር መረጃ\n"
+        "/help - 🆘 የእገዛ ማዕከል\n\n"
+        "📌 **ማሳሰቢያ:** ማንኛውም የቴክኒክ ችግር ወይም አስተያየት ካለዎት በ @th_ug_life ያግኙን።"
     )
     bot.reply_to(message, help_text, parse_mode='Markdown')
 
@@ -91,9 +91,9 @@ def get_stats(message):
         cursor.execute('SELECT COUNT(*) FROM users')
         count = cursor.fetchone()[0]
         conn.close()
-        bot.reply_to(message, f"👥 **የቦቱ ጠቅላላ ተጠቃሚዎች:** {count}")
+        bot.reply_to(message, f"👥 **የቦቱ ጠቅላላ ተጠቃሚዎች:** `{count}`")
     else:
-        bot.reply_to(message, "ይህ ትዕዛዝ ለአስተዳዳሪ ብቻ የተፈቀደ ነው!")
+        bot.reply_to(message, "🚫 ይህ ትዕዛዝ ለአስተዳዳሪ ብቻ የተፈቀደ ነው!")
 
 # --- MESSAGE HANDLER ---
 
@@ -106,7 +106,7 @@ def handle_text(message):
     buttons = [types.InlineKeyboardButton(f"{info['name']} {info['flag']}", callback_data=code) 
                for code, info in lang_info.items()]
     markup.add(*buttons)
-    bot.reply_to(message, "✅ ጽሁፉን ተቀብያለሁ! ወደ የትኛው ቋንቋ ልተርጉምልዎ?", reply_markup=markup)
+    bot.reply_to(message, "✅ **ጽሁፉን ተቀብያለሁ!**\n\nወደ የትኛው ቋንቋ ልተርጉምልዎ?", reply_markup=markup)
 
 # --- CALLBACK QUERY HANDLER ---
 
@@ -117,7 +117,7 @@ def callback_query(call):
     original_text = user_data.get(chat_id)
     
     if not original_text:
-        bot.send_message(chat_id, "⚠️ እባክዎ መጀመሪያ ጽሁፍ ይላኩልኝ።")
+        bot.send_message(chat_id, "⚠️ **እባክዎ መጀመሪያ ጽሁፍ ይላኩልኝ።**")
         return
 
     bot.edit_message_reply_markup(chat_id=chat_id, message_id=call.message.message_id, reply_markup=None)
@@ -127,9 +127,9 @@ def callback_query(call):
         translated = translator.translate(original_text)
         lang_flag = lang_info[target_lang]['flag']
         
-        result_text = f"{lang_flag} **ትርጉም:**\n\n{translated}\n\n━━━━━━━━━━━━━━━━━━\n🤖 @vision_translator_bot"
+        result_text = f"{lang_flag} **ትርጉም:**\n\n_{translated}_\n\n━━━━━━━━━━━━━━━━━━\n🤖 @vision_translator_bot"
         bot.send_message(chat_id, result_text, parse_mode='Markdown')
     except Exception:
-        bot.send_message(chat_id, "⚠️ ይቅርታ፣ መተርጎም አልቻልኩም።")
+        bot.send_message(chat_id, "⚠️ **ይቅርታ፣ መተርጎም አልቻልኩም።**")
 
 bot.infinity_polling()
