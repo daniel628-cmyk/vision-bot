@@ -1,17 +1,27 @@
 import os
+import sqlite3
 import telebot
 from deep_translator import GoogleTranslator
 from telebot import types
 
 TOKEN = os.environ.get('BOT_TOKEN')
-if not TOKEN:
-    exit("ስህተት: BOT_TOKEN በ Railway Variables ውስጥ አልተገኘም!")
-
 bot = telebot.TeleBot(TOKEN)
+
+# የአስተዳዳሪ መታወቂያ
+ADMIN_ID = 5544893200
+
+# ዳታቤዝ ማዘጋጃ
+def init_db():
+    conn = sqlite3.connect('bot_data.db')
+    cursor = conn.cursor()
+    cursor.execute('CREATE TABLE IF NOT EXISTS users (user_id INTEGER PRIMARY KEY)')
+    conn.commit()
+    conn.close()
+
+init_db()
 
 user_data = {}
 
-# ቋንቋ እና ምልክታቸው
 lang_info = {
     "am": {"name": "አማርኛ", "flag": "🇪🇹"},
     "en": {"name": "English", "flag": "🇺🇸"},
@@ -19,11 +29,17 @@ lang_info = {
     "es": {"name": "Español", "flag": "🇪🇸"},
     "fr": {"name": "Français", "flag": "🇫🇷"},
     "ar": {"name": "العربية", "flag": "🇸🇦"},
-    "de": {"name": "Deutsch", "flag": "🇩🇪"}
+    "de": "Deutsch 🇩🇪"
 }
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
+    conn = sqlite3.connect('bot_data.db')
+    cursor = conn.cursor()
+    cursor.execute('INSERT OR IGNORE INTO users (user_id) VALUES (?)', (message.from_user.id,))
+    conn.commit()
+    conn.close()
+
     user_name = message.from_user.first_name
     welcome_text = (
         f"✨ **ሰላም {user_name}! ወደ Vision Translator እንኳን በደህና መጡ!** ✨\n\n"
@@ -32,6 +48,19 @@ def send_welcome(message):
     )
     bot.reply_to(message, welcome_text, parse_mode='Markdown')
 
+# የተጠቃሚዎች ቁጥር መከታተያ
+@bot.message_handler(commands=['stats'])
+def get_stats(message):
+    if message.from_user.id == ADMIN_ID:
+        conn = sqlite3.connect('bot_data.db')
+        cursor = conn.cursor()
+        cursor.execute('SELECT COUNT(*) FROM users')
+        count = cursor.fetchone()[0]
+        conn.close()
+        bot.reply_to(message, f"👥 **የቦቱ ጠቅላላ ተጠቃሚዎች:** {count}")
+    else:
+        bot.reply_to(message, "ይህ ትዕዛዝ ለአስተዳዳሪ ብቻ የተፈቀደ ነው!")
+
 @bot.message_handler(func=lambda message: True)
 def handle_text(message):
     if message.text.startswith('/'): return
@@ -39,9 +68,8 @@ def handle_text(message):
     
     markup = types.InlineKeyboardMarkup(row_width=2)
     buttons = [types.InlineKeyboardButton(f"{info['name']} {info['flag']}", callback_data=code) 
-               for code, info in lang_info.items()]
+               for code, info in lang_info.items() if isinstance(info, dict)]
     markup.add(*buttons)
-    
     bot.reply_to(message, "✅ ጽሁፉን ተቀብያለሁ! ወደ የትኛው ቋንቋ ልተርጉምልዎ?", reply_markup=markup)
 
 @bot.callback_query_handler(func=lambda call: True)
@@ -58,19 +86,11 @@ def callback_query(call):
 
     try:
         translator = GoogleTranslator(source='auto', target=target_lang)
-        if len(original_text) > 2000:
-            part1 = original_text[:2000]
-            part2 = original_text[2000:]
-            translated = translator.translate(part1) + "\n\n" + translator.translate(part2)
-        else:
-            translated = translator.translate(original_text)
-            
-        # የተመረጠው ቋንቋ ምልክት
+        translated = translator.translate(original_text)
         lang_flag = lang_info[target_lang]['flag']
         
         result_text = f"{lang_flag} **ትርጉም:**\n\n{translated}\n\n━━━━━━━━━━━━━━━━━━\n🤖 @vision_translator_bot"
         bot.send_message(chat_id, result_text, parse_mode='Markdown')
-        
     except Exception:
         bot.send_message(chat_id, "⚠️ ይቅርታ፣ መተርጎም አልቻልኩም።")
 
