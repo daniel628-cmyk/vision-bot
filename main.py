@@ -95,3 +95,26 @@ def callback_query(call):
         bot.send_message(chat_id, "⚠️ ይቅርታ፣ መተርጎም አልቻልኩም።")
 
 bot.infinity_polling()
+# ቀድሞ ከነበሩት Handler-ዎች በተጨማሪ እነዚህን ያካትቱ፡
+
+@bot.message_handler(commands=['help'])
+def send_help(message):
+    help_text = (
+        "💡 **የእገዛ ማዕከል**\n\n"
+        "ለመተርጎም የሚፈልጉትን ጽሁፍ ይላኩልኝ፤ ከዚያ ቋንቋውን ይምረጡ።\n\n"
+        "ትዕዛዞች፦\n"
+        "/start - ቦቱን ለመጀመር\n"
+        "/about - ስለ ቦቱ መረጃ ለማግኘት\n"
+        "/help - ይህንን መልእክት ለማየት"
+    )
+    bot.reply_to(message, help_text, parse_mode='Markdown')
+
+@bot.message_handler(commands=['about'])
+def send_about(message):
+    about_text = (
+        "🤖 **ስለ Vision Translator Bot**\n\n"
+        "ይህ ቦት ጽሁፎችን በቀላሉ ወደተለያዩ ቋንቋዎች እንዲቀይሩ ይረዳዎታል።\n"
+        "የተገነባው በ፦ @Vision_Translator_Creator\n"
+        "ስሪት፦ 1.0.0"
+    )
+    bot.reply_to(message, about_text, parse_mode='Markdown')
