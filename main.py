@@ -95,7 +95,7 @@ def callback_query(call):
         bot.send_message(chat_id, "⚠️ ይቅርታ፣ መተርጎም አልቻልኩም።")
 
 bot.infinity_polling()
-# ቀድሞ ከነበሩት Handler-ዎች በተጨማሪ እነዚህን ያካትቱ፡
+ቀድሞ ከነበሩት Handler-ዎች በተጨማሪ እነዚህን ያካትቱ፡
 
 @bot.message_handler(commands=['help'])
 def send_help(message):
@@ -117,4 +117,4 @@ def send_about(message):
         "የተገነባው በ፦ @Vision_Translator_Creator\n"
         "ስሪት፦ 1.0.0"
     )
-    bot.reply_to(message, about_text, parse_mode='Markdown')
+    bot.reply_to(message, about_text, parse_mode
