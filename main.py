@@ -79,7 +79,7 @@ def send_help(message):
         "/start - 🔄 ቦቱን ዳግም ያስጀምሩ\n"
         "/about - ℹ️ ስለ ቦቱ ዝርዝር መረጃ\n"
         "/help - 🆘 የእገዛ ማዕከል\n\n"
-        "📌 **ማሳሰቢያ:** ማንኛውም የቴክኒክ ችግር ወይም አስተያየት ካለዎት በ @th_ug_life ያግኙን።"
+        "📌 **ማሳሰቢያ:** ማንኛውም የቴክኒክ ችግር ወይም አስተያየት ካለዎት በ @th\_ug\_life ያግኙን።"
     )
     bot.reply_to(message, help_text, parse_mode='Markdown')
 
