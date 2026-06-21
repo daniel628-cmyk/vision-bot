@@ -29,8 +29,10 @@ lang_info = {
     "es": {"name": "Español", "flag": "🇪🇸"},
     "fr": {"name": "Français", "flag": "🇫🇷"},
     "ar": {"name": "العربية", "flag": "🇸🇦"},
-    "de": "Deutsch 🇩🇪"
+    "de": {"name": "Deutsch", "flag": "🇩🇪"}
 }
+
+# --- COMMAND HANDLERS ---
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
@@ -48,7 +50,27 @@ def send_welcome(message):
     )
     bot.reply_to(message, welcome_text, parse_mode='Markdown')
 
-# የተጠቃሚዎች ቁጥር መከታተያ
+@bot.message_handler(commands=['about'])
+def send_about(message):
+    about_text = (
+        "🤖 **ስለ Vision Translator Bot**\n\n"
+        "ይህ ቦት ጽሁፎችን በቀላሉ ወደተለያዩ ቋንቋዎች እንዲቀይሩ ይረዳዎታል።\n"
+        "ስሪት: 1.0.0"
+    )
+    bot.reply_to(message, about_text, parse_mode='Markdown')
+
+@bot.message_handler(commands=['help'])
+def send_help(message):
+    help_text = (
+        "💡 **የእገዛ ማዕከል**\n\n"
+        "መተርጎም የሚፈልጉትን ጽሁፍ ይላኩልኝ፤ ከዚያ ቋንቋውን ይምረጡ።\n\n"
+        "ትዕዛዞች:\n"
+        "/start - ቦቱን ለመጀመር\n"
+        "/about - ስለ ቦቱ መረጃ\n"
+        "/help - ይህንን መልእክት ለማየት"
+    )
+    bot.reply_to(message, help_text, parse_mode='Markdown')
+
 @bot.message_handler(commands=['stats'])
 def get_stats(message):
     if message.from_user.id == ADMIN_ID:
@@ -61,6 +83,8 @@ def get_stats(message):
     else:
         bot.reply_to(message, "ይህ ትዕዛዝ ለአስተዳዳሪ ብቻ የተፈቀደ ነው!")
 
+# --- MESSAGE HANDLER ---
+
 @bot.message_handler(func=lambda message: True)
 def handle_text(message):
     if message.text.startswith('/'): return
@@ -68,9 +92,11 @@ def handle_text(message):
     
     markup = types.InlineKeyboardMarkup(row_width=2)
     buttons = [types.InlineKeyboardButton(f"{info['name']} {info['flag']}", callback_data=code) 
-               for code, info in lang_info.items() if isinstance(info, dict)]
+               for code, info in lang_info.items()]
     markup.add(*buttons)
     bot.reply_to(message, "✅ ጽሁፉን ተቀብያለሁ! ወደ የትኛው ቋንቋ ልተርጉምልዎ?", reply_markup=markup)
+
+# --- CALLBACK QUERY HANDLER ---
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_query(call):
@@ -95,26 +121,3 @@ def callback_query(call):
         bot.send_message(chat_id, "⚠️ ይቅርታ፣ መተርጎም አልቻልኩም።")
 
 bot.infinity_polling()
-ቀድሞ ከነበሩት Handler-ዎች በተጨማሪ እነዚህን ያካትቱ፡
-
-@bot.message_handler(commands=['help'])
-def send_help(message):
-    help_text = (
-        "💡 **የእገዛ ማዕከል**\n\n"
-        "ለመተርጎም የሚፈልጉትን ጽሁፍ ይላኩልኝ፤ ከዚያ ቋንቋውን ይምረጡ።\n\n"
-        "ትዕዛዞች፦\n"
-        "/start - ቦቱን ለመጀመር\n"
-        "/about - ስለ ቦቱ መረጃ ለማግኘት\n"
-        "/help - ይህንን መልእክት ለማየት"
-    )
-    bot.reply_to(message, help_text, parse_mode='Markdown')
-
-@bot.message_handler(commands=['about'])
-def send_about(message):
-    about_text = (
-        "🤖 **ስለ Vision Translator Bot**\n\n"
-        "ይህ ቦት ጽሁፎችን በቀላሉ ወደተለያዩ ቋንቋዎች እንዲቀይሩ ይረዳዎታል።\n"
-        "የተገነባው በ፦ @Vision_Translator_Creator\n"
-        "ስሪት፦ 1.0.0"
-    )
-    bot.reply_to(message, about_text, parse_mode
