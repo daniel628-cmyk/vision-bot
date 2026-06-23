@@ -46,15 +46,15 @@ def send_welcome(message):
     add_user(message.chat.id)
     user_name = message.from_user.first_name
     
-    # ልክ እንደጠየቅከው ያማረ የሰላምታ መልእክት
+    # HTML ፎርማት በመጠቀም Quote ተስተካክሏል
     welcome_text = (
-        f"🌟 👋 **{user_name}** እንኳን በደህና መጡ!! 🌟\n\n"
+        f"🌟 👋 <b>{user_name}</b> እንኳን በደህና መጡ!! 🌟\n\n"
         "ይህ ቦት ሁለት ጠቃሚ ነገሮች ያደርግልዎታል፦\n"
         "1️⃣ ጽሁፍ በቋንቋ መቀየር (ትርጉም)\n"
         "2️⃣ ከምስል ጽሁፍ መውጣት (OCR)\n\n"
-        "📝 <b>**ትርጉም ለማድረግ :** </b>\n"
-        "<blockquote> ➻ የሚፈልጉትን ጽሁፍ ይላኩ ከዛን ከስር ቋንቋ ይምረጡ ።\n"
-        " ➻ ምስል ለመቀየር OCR የሚለውን ይንኩት ከዛን ምስል ይላኩ ።</blockquote>"
+        "📝 <b>ትርጉም ለማድረግ :</b>\n"
+        "<blockquote>➻ የሚፈልጉትን ጽሁፍ ይላኩ ከዛን ከስር ቋንቋ ይምረጡ ።\n"
+        "➻ ምስል ለመቀየር OCR የሚለውን ይንኩት ከዛን ምስል ይላኩ ።</blockquote>"
     )
     
     # የቻናል፣ ክሬተር እና OCR ቁልፎች
@@ -66,7 +66,8 @@ def send_welcome(message):
     markup.add(btn1, btn2)
     markup.add(btn_ocr)
     
-    bot.send_message(message.chat.id, welcome_text, parse_mode='Markdown', reply_markup=markup)
+    # parse_mode='HTML' ሆኗል
+    bot.send_message(message.chat.id, welcome_text, parse_mode='HTML', reply_markup=markup)
 
 # --- 3. Stats, About & Help Commands ---
 @bot.message_handler(commands=['about'])
@@ -74,7 +75,7 @@ def about_command(message):
     add_user(message.chat.id)
     about_text = (
         "ℹ️ **ስለ ቦቱ (About Us)** ℹ️\n\n"
-        "🤖 **Vision Translate Bot ** የተሰራው የእለት ተእለት የትርጉም እና የጽሑፍ ልወጣ ስራዎችን ለማቃለል ነው።\n\n"
+        "🤖 **Ethio Vision Tools** የተሰራው የእለት ተእለት የትርጉም እና የጽሑፍ ልወጣ ስራዎችን ለማቃለል ነው።\n\n"
         "✨ **ዋና ዋና አገልግሎቶቻችን:**\n"
         "🔹 ትክክለኛ የጽሑፍ ትርጉም (በተለያዩ ቋንቋዎች)\n"
         "🔹 ምስልን ወደ ጽሑፍ መቀየር (OCR Technology)\n\n"
@@ -97,7 +98,7 @@ def help_command(message):
         "➻ መጀመሪያ `/start` ብለው የ **📸 OCR** ቁልፍን ይጫኑ።\n"
         "➻ በመቀጠል ጽሑፍ ያለበትን ምስል ይላኩልኝ።\n\n"
         "🔄 `/start` - ቦቱን አዲስ ለማስጀመር\n"
-       " 💠 ' /OCR ' - ምስል ወደ ፅሁፍ ለመቀየር"
+        "📊 `/stats` - የቦቱን መረጃ ለማየት (ለአድሚን ብቻ)\n"
         "ℹ️ `/about` - ስለ ቦቱ ለማወቅ"
     )
     bot.send_message(message.chat.id, help_text, parse_mode="Markdown")
