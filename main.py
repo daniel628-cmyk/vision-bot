@@ -75,7 +75,7 @@ def about_command(message):
     add_user(message.chat.id)
     about_text = (
         "ℹ️ **ስለ ቦቱ (About Us)** ℹ️\n\n"
-        "🤖 **Ethio Vision Tools** የተሰራው የእለት ተእለት የትርጉም እና የጽሑፍ ልወጣ ስራዎችን ለማቃለል ነው።\n\n"
+        "🤖 **Vision Translater Bot** የተሰራው የእለት ተእለት የትርጉም እና የጽሑፍ ልወጣ ስራዎችን ለማቃለል ነው።\n\n"
         "✨ **ዋና ዋና አገልግሎቶቻችን:**\n"
         "🔹 ትክክለኛ የጽሑፍ ትርጉም (በተለያዩ ቋንቋዎች)\n"
         "🔹 ምስልን ወደ ጽሑፍ መቀየር (OCR Technology)\n\n"
@@ -98,7 +98,7 @@ def help_command(message):
         "➻ መጀመሪያ `/start` ብለው የ **📸 OCR** ቁልፍን ይጫኑ።\n"
         "➻ በመቀጠል ጽሑፍ ያለበትን ምስል ይላኩልኝ።\n\n"
         "🔄 `/start` - ቦቱን አዲስ ለማስጀመር\n"
-        "📊 `/stats` - የቦቱን መረጃ ለማየት (ለአድሚን ብቻ)\n"
+        "💠 '/OCR' - ምስል ወደ ፅሁፍ ለመቀየር"
         "ℹ️ `/about` - ስለ ቦቱ ለማወቅ"
     )
     bot.send_message(message.chat.id, help_text, parse_mode="Markdown")
